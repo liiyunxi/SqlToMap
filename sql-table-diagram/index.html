@@ -181,6 +181,24 @@
             flex-wrap: wrap;
         }
 
+        .db-selector select {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: var(--secondary);
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            min-width: 120px;
+        }
+
+        .db-selector select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         .theme-btn {
             padding: 0.5rem 1rem;
             border: 2px solid var(--border);
@@ -680,6 +698,12 @@
                     <span>毕设论文专用</span>
                 </div>
             </div>
+            <div class="db-selector">
+                <select id="dbType" onchange="onDbTypeChange()">
+                    <option value="mysql" selected>MySQL</option>
+                    <option value="postgresql">PostgreSQL</option>
+                </select>
+            </div>
             <div class="theme-selector">
                 <button class="theme-btn active" data-theme="academic">学术蓝</button>
                 <button class="theme-btn" data-theme="minimal">简约白</button>
@@ -714,7 +738,7 @@
                     </div>
                 </div>
                 <div class="sql-input">
-                    <textarea class="sql-textarea" id="sqlInput" placeholder="-- 输入您的 CREATE TABLE 语句
+                    <textarea class="sql-textarea" id="sqlInput" placeholder="-- 输入您的 CREATE TABLE 语句 (MySQL)
 -- 示例：
 
 CREATE TABLE users (
@@ -735,7 +759,6 @@ CREATE TABLE posts (
                     <div class="sample-btns">
                         <button class="sample-btn" onclick="loadSample('user')">👤 用户表</button>
                         <button class="sample-btn" onclick="loadSample('blog')">📝 博客系统</button>
-                        <button class="sample-btn" onclick="loadSample('shop')">🛒 电商系统</button>
                         <button class="sample-btn" onclick="loadSample('school')">🎓 教务系统</button>
                     </div>
                 </div>
@@ -820,8 +843,10 @@ CREATE TABLE posts (
 
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
+        let currentDbType = 'mysql';
+
         const sampleSQL = {
-            user: `-- 用户表
+            user_mysql: `-- 用户表 (MySQL)
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -835,7 +860,21 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );`,
 
-            blog: `-- 博客系统数据表
+            user_postgresql: `-- 用户表 (PostgreSQL)
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    nickname VARCHAR(50),
+    avatar VARCHAR(255),
+    phone VARCHAR(20),
+    status SMALLINT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);`,
+
+            blog_mysql: `-- 博客系统数据表 (MySQL)
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -888,73 +927,60 @@ CREATE TABLE post_tags (
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );`,
 
-            shop: `-- 电商系统数据表
-CREATE TABLE customers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+            blog_postgresql: `-- 博客系统数据表 (PostgreSQL)
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    phone VARCHAR(20),
-    real_name VARCHAR(50),
-    gender VARCHAR(10),
-    birthday DATE,
     avatar VARCHAR(255),
-    points INT DEFAULT 0,
-    level VARCHAR(20) DEFAULT 'bronze',
+    bio TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE products (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    category_id INT NOT NULL,
-    name VARCHAR(200) NOT NULL,
-    subtitle VARCHAR(200),
-    price DECIMAL(10,2) NOT NULL,
-    original_price DECIMAL(10,2),
-    stock INT DEFAULT 0,
-    sales_count INT DEFAULT 0,
-    cover_image VARCHAR(255),
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    slug VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
-    detail TEXT,
-    status VARCHAR(20) DEFAULT 'active',
+    parent_id INTEGER,
+    sort_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    category_id INTEGER,
+    title VARCHAR(200) NOT NULL,
+    slug VARCHAR(200) NOT NULL UNIQUE,
+    content TEXT,
+    excerpt TEXT,
+    featured_image VARCHAR(255),
+    view_count INTEGER DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'draft',
+    published_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-CREATE TABLE orders (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    order_no VARCHAR(50) NOT NULL UNIQUE,
-    customer_id INT NOT NULL,
-    total_amount DECIMAL(10,2) NOT NULL,
-    discount_amount DECIMAL(10,2) DEFAULT 0,
-    pay_amount DECIMAL(10,2) NOT NULL,
-    pay_status VARCHAR(20) DEFAULT 'pending',
-    pay_method VARCHAR(20),
-    pay_time TIMESTAMP,
-    shipping_status VARCHAR(20) DEFAULT 'unshipped',
-    shipping_no VARCHAR(100),
-    shipping_time TIMESTAMP,
-    receive_time TIMESTAMP,
-    address_id INT,
-    remark TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customers(id)
+CREATE TABLE tags (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    slug VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE order_items (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    product_name VARCHAR(200) NOT NULL,
-    cover_image VARCHAR(255),
-    price DECIMAL(10,2) NOT NULL,
-    quantity INT NOT NULL,
-    subtotal DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+CREATE TABLE post_tags (
+    post_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL,
+    PRIMARY KEY (post_id, tag_id),
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );`,
 
-            school: `-- 教务系统数据表
+            school_mysql: `-- 教务系统数据表 (MySQL)
 CREATE TABLE students (
     id INT PRIMARY KEY AUTO_INCREMENT,
     student_no VARCHAR(20) NOT NULL UNIQUE,
@@ -1018,11 +1044,121 @@ CREATE TABLE course_selections (
     FOREIGN KEY (course_id) REFERENCES courses(id),
     FOREIGN KEY (teacher_id) REFERENCES teachers(id),
     UNIQUE KEY unique_selection (student_id, course_id, academic_year, semester)
+);`,
+
+            school_postgresql: `-- 教务系统数据表 (PostgreSQL)
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    student_no VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    gender VARCHAR(10),
+    birthday DATE,
+    id_card VARCHAR(20),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    department VARCHAR(100),
+    major VARCHAR(100),
+    class_name VARCHAR(50),
+    enrollment_year INTEGER,
+    graduation_year INTEGER,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE teachers (
+    id SERIAL PRIMARY KEY,
+    teacher_no VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    gender VARCHAR(10),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    department VARCHAR(100),
+    title VARCHAR(50),
+    research_area VARCHAR(200),
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE courses (
+    id SERIAL PRIMARY KEY,
+    course_no VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    credit NUMERIC(3,1) NOT NULL,
+    hours INTEGER NOT NULL,
+    department VARCHAR(100),
+    description TEXT,
+    semester VARCHAR(20),
+    max_students INTEGER,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE course_selections (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    teacher_id INTEGER,
+    academic_year VARCHAR(20),
+    semester VARCHAR(10),
+    score NUMERIC(5,2),
+    grade VARCHAR(10),
+    status VARCHAR(20) DEFAULT 'selected',
+    selected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id),
+    UNIQUE (student_id, course_id, academic_year, semester)
 );`
         };
 
+        function onDbTypeChange() {
+            currentDbType = document.getElementById('dbType').value;
+            const placeholderText = currentDbType === 'mysql' 
+                ? `-- 输入您的 CREATE TABLE 语句 (MySQL)
+-- 示例：
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);`
+                : `-- 输入您的 CREATE TABLE 语句 (PostgreSQL)
+-- 示例：
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);`;
+            document.getElementById('sqlInput').placeholder = placeholderText;
+        }
+
         function loadSample(type) {
-            document.getElementById('sqlInput').value = sampleSQL[type];
+            const dbType = currentDbType;
+            const key = type + '_' + dbType;
+            document.getElementById('sqlInput').value = sampleSQL[key] || sampleSQL[type + '_mysql'] || sampleSQL[type];
             generateDiagram();
         }
 
@@ -1042,7 +1178,7 @@ CREATE TABLE course_selections (
             document.getElementById('legend').style.display = 'none';
         }
 
-        function parseSQL(sql) {
+        function parseSQL(sql, dbType = 'mysql') {
             const tables = [];
             const createTableRegex = /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`"']?(\w+)[`"']?\s*\(([\s\S]*?)\)(?:\s*ENGINE.*?)?(?:\s*;|$)/gi;
             
@@ -1050,7 +1186,7 @@ CREATE TABLE course_selections (
             while ((match = createTableRegex.exec(sql)) !== null) {
                 const tableName = match[1];
                 const columnsStr = match[2];
-                const columns = parseColumns(columnsStr);
+                const columns = parseColumns(columnsStr, dbType);
                 
                 if (columns.length > 0) {
                     tables.push({ name: tableName, columns });
@@ -1060,11 +1196,12 @@ CREATE TABLE course_selections (
             return tables;
         }
 
-        function parseColumns(columnsStr) {
+        function parseColumns(columnsStr, dbType = 'mysql') {
             const columns = [];
             const lines = columnsStr.split(',');
             
             let currentConstraint = {};
+            const pendingFKs = [];
             
             for (let line of lines) {
                 line = line.trim();
@@ -1079,36 +1216,58 @@ CREATE TABLE course_selections (
                     upperLine.includes('KEY ') ||
                     upperLine.includes('CONSTRAINT')) {
                     currentConstraint = parseConstraint(line);
+                    if (currentConstraint.isFK) {
+                        pendingFKs.push(currentConstraint);
+                    }
                     continue;
                 }
                 
                 const columnMatch = line.match(/^[`"']?(\w+)[`"']?\s+(\w+(?:\s*\([^)]+\))?)/i);
                 if (columnMatch) {
                     const name = columnMatch[1];
-                    const type = columnMatch[2].toUpperCase();
-                    const isPrimary = upperLine.includes('PRIMARY KEY') || currentConstraint.isPK;
-                    const isForeign = upperLine.includes('FOREIGN KEY') || currentConstraint.isFK;
-                    const isUnique = upperLine.includes('UNIQUE') || currentConstraint.isUK;
+                    let type = columnMatch[2].toUpperCase();
                     
-                    if (currentConstraint.refField && !isForeign) {
-                        columns.push({
-                            name,
-                            type,
-                            isPrimary,
-                            isForeign: true,
-                            references: currentConstraint.refTable + '.' + currentConstraint.refField,
-                            isUnique
-                        });
-                    } else {
-                        columns.push({
-                            name,
-                            type,
-                            isPrimary,
-                            isForeign,
-                            references: currentConstraint.isFK ? (currentConstraint.refTable + '.' + currentConstraint.refField) : null,
-                            isUnique
-                        });
+                    let isPrimary = upperLine.includes('PRIMARY KEY') || currentConstraint.isPK;
+                    let isForeign = false;
+                    let isUnique = upperLine.includes('UNIQUE') || upperLine.includes('UNIQUE KEY') || currentConstraint.isUK;
+                    let references = null;
+                    
+                    if (upperLine.includes('PRIMARY KEY') && (type === 'SERIAL' || type === 'SERIAL PRIMARY KEY')) {
+                        type = 'SERIAL';
+                        isPrimary = true;
                     }
+                    
+                    if (type === 'SERIAL') {
+                        isPrimary = true;
+                        type = 'SERIAL';
+                    }
+                    
+                    for (const fk of pendingFKs) {
+                        if (fk.fkField === name || !fk.fkField) {
+                            isForeign = true;
+                            references = fk.refTable + '.' + fk.refField;
+                            break;
+                        }
+                    }
+                    
+                    if (currentConstraint.refField && !isForeign && currentConstraint.isFK) {
+                        isForeign = true;
+                        references = currentConstraint.refTable + '.' + currentConstraint.refField;
+                    }
+                    
+                    if (dbType === 'postgresql') {
+                        type = type.replace(/^INT\b/, 'INTEGER');
+                        type = type.replace(/^DECIMAL\b/, 'NUMERIC');
+                    }
+                    
+                    columns.push({
+                        name,
+                        type,
+                        isPrimary,
+                        isForeign,
+                        references,
+                        isUnique
+                    });
                     
                     currentConstraint = {};
                 }
@@ -1139,7 +1298,7 @@ CREATE TABLE course_selections (
                 }
             }
             
-            if (upper.includes('UNIQUE') || upper.includes('KEY ') && upper.includes('UNIQUE')) {
+            if (upper.includes('UNIQUE') || (upper.includes('KEY ') && upper.includes('UNIQUE'))) {
                 constraint.isUK = true;
             }
             
@@ -1153,7 +1312,8 @@ CREATE TABLE course_selections (
                 return;
             }
             
-            const tables = parseSQL(sql);
+            const dbType = document.getElementById('dbType').value;
+            const tables = parseSQL(sql, dbType);
             
             if (tables.length === 0) {
                 showToast('未检测到有效的数据表，请检查 SQL 语法');
