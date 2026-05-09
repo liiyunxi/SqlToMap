@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL 数据表图生成器 | 毕设论文专用</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d5a7b;
+            --primary-light: #4a7c9b;
+            --secondary: #f8f9fa;
+            --accent: #e67e22;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #dce1e7;
+            --bg-main: #f0f4f8;
+            --shadow: rgba(45, 90, 123, 0.1);
+            --table-header-bg: #2d5a7b;
+            --table-header-text: #ffffff;
+            --table-row-alt: #f8fafc;
+            --table-border: #c8d6e5;
+            --pk-color: #8e44ad;
+            --fk-color: #27ae60;
+            --type-color: #e67e22;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3498db;
+            --primary-light: #5dade2;
+            --secondary: #1a1a2e;
+            --accent: #f39c12;
+            --text: #ecf0f1;
+            --text-light: #95a5a6;
+            --border: #34495e;
+            --bg-main: #0f0f1a;
+            --shadow: rgba(52, 152, 219, 0.2);
+            --table-header-bg: #1e3a5f;
+            --table-header-text: #ecf0f1;
+            --table-row-alt: #1a1a2e;
+            --table-border: #34495e;
+        }
+
+        [data-theme="tech"] {
+            --primary: #00d9ff;
+            --primary-light: #4df0ff;
+            --secondary: #0a0a0a;
+            --accent: #ff006e;
+            --text: #ffffff;
+            --text-light: #a0a0a0;
+            --border: #333;
+            --bg-main: #050505;
+            --shadow: rgba(0, 217, 255, 0.3);
+            --table-header-bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            --table-header-text: #00d9ff;
+            --table-row-alt: #0a0a0a;
+            --table-border: #333;
+        }
+
+        [data-theme="academic"] {
+            --primary: #1a5276;
+            --primary-light: #2980b9;
+            --secondary: #fdfefe;
+            --accent: #d35400;
+            --text: #1a252f;
+            --text-light: #5d6d7e;
+            --border: #bdc3c7;
+            --bg-main: #f4f6f7;
+            --shadow: rgba(26, 82, 118, 0.08);
+            --table-header-bg: #1a5276;
+            --table-header-text: #fdfefe;
+            --table-row-alt: #f8f9f9;
+            --table-border: #d5dbdb;
+            --font-family: 'Noto Sans SC', serif;
+        }
+
+        [data-theme="minimal"] {
+            --primary: #2c3e50;
+            --primary-light: #34495e;
+            --secondary: #ffffff;
+            --accent: #e74c3c;
+            --text: #2c3e50;
+            --text-light: #95a5a6;
+            --border: #ecf0f1;
+            --bg-main: #fafafa;
+            --shadow: rgba(44, 62, 80, 0.05);
+            --table-header-bg: #2c3e50;
+            --table-header-text: #ffffff;
+            --table-row-alt: #fbfcfc;
+            --table-border: #ecf0f1;
+        }
+
+        [data-theme="elegant"] {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --secondary: #fefefe;
+            --accent: #fd79a8;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --border: #dfe6e9;
+            --bg-main: #f8f5ff;
+            --shadow: rgba(108, 92, 231, 0.1);
+            --table-header-bg: linear-gradient(120deg, #6c5ce7 0%, #a29bfe 100%);
+            --table-header-text: #ffffff;
+            --table-row-alt: #faf8ff;
+            --table-border: #d4d1f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text);
+            min-height: 100vh;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: var(--secondary);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 0;
+        }
+
+        @media (max-width: 1024px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .editor-panel {
+            background: var(--secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .sql-input {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sql-textarea {
+            flex: 1;
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            resize: none;
+            background: var(--bg-main);
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .sql-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--shadow);
+        }
+
+        .sql-textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        .sample-btns {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .sample-btn {
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-main);
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sample-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            border-style: solid;
+        }
+
+        .preview-panel {
+            background: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .preview-container {
+            flex: 1;
+            overflow: auto;
+            padding: 2rem;
+        }
+
+        .preview-area {
+            min-height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-content: flex-start;
+        }
+
+        .table-card {
+            background: var(--secondary);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px var(--shadow);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table-card:nth-child(1) { animation-delay: 0.1s; }
+        .table-card:nth-child(2) { animation-delay: 0.2s; }
+        .table-card:nth-child(3) { animation-delay: 0.3s; }
+        .table-card:nth-child(4) { animation-delay: 0.4s; }
+        .table-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .table-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .table-header {
+            background: var(--table-header-bg);
+            color: var(--table-header-text);
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        [data-theme="tech"] .table-header,
+        [data-theme="elegant"] .table-header {
+            background: var(--table-header-bg);
+        }
+
+        .table-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.9;
+        }
+
+        .table-body {
+            padding: 0;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr auto;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid var(--table-border);
+            align-items: center;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .field-row:last-child {
+            border-bottom: none;
+        }
+
+        .field-row:nth-child(even) {
+            background: var(--table-row-alt);
+        }
+
+        .field-row:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .field-name {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .field-name .pk {
+            color: var(--pk-color);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .field-name .fk {
+            color: var(--fk-color);
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .field-row:hover .pk,
+        .field-row:hover .fk {
+            color: #ffd700;
+        }
+
+        .field-type {
+            color: var(--type-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .field-row:hover .field-type {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .field-key {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .field-key.pk {
+            background: rgba(142, 68, 173, 0.15);
+            color: var(--pk-color);
+        }
+
+        .field-key.fk {
+            background: rgba(39, 174, 96, 0.15);
+            color: var(--fk-color);
+        }
+
+        .field-key.uk {
+            background: rgba(241, 196, 15, 0.15);
+            color: #d4ac0d;
+        }
+
+        .field-row:hover .field-key.pk,
+        .field-row:hover .field-key.fk,
+        .field-row:hover .field-key.uk {
+            background: rgba(255,255,255,0.2);
+            color: #ffd700;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .empty-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+            max-width: 400px;
+        }
+
+        .settings-bar {
+            background: var(--secondary);
+            border-top: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .setting-item label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        .setting-item select,
+        .setting-item input[type="range"] {
+            padding: 0.4rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-main);
+            color: var(--text);
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+
+        .setting-item input[type="range"] {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        .style-settings {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .legend {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.pk { background: var(--pk-color); }
+        .legend-dot.fk { background: var(--fk-color); }
+        .legend-dot.uk { background: #d4ac0d; }
+
+        @media print {
+            header, .editor-panel, .settings-bar, .legend, .btn-group {
+                display: none !important;
+            }
+            main {
+                display: block;
+            }
+            .preview-panel {
+                background: white;
+            }
+            .table-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container" id="app">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+                <div>
+                    <h1>SQL 数据表图生成器</h1>
+                    <span>毕设论文专用</span>
+                </div>
+            </div>
+            <div class="theme-selector">
+                <button class="theme-btn active" data-theme="academic">学术蓝</button>
+                <button class="theme-btn" data-theme="minimal">简约白</button>
+                <button class="theme-btn" data-theme="elegant">优雅紫</button>
+                <button class="theme-btn" data-theme="tech">科技风</button>
+                <button class="theme-btn" data-theme="dark">暗黑系</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="editor-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 7h16M4 12h16M4 17h10"/>
+                        </svg>
+                        SQL 输入
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="clearSQL()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                            </svg>
+                            清空
+                        </button>
+                        <button class="btn btn-primary" onclick="generateDiagram()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            生成图表
+                        </button>
+                    </div>
+                </div>
+                <div class="sql-input">
+                    <textarea class="sql-textarea" id="sqlInput" placeholder="-- 输入您的 CREATE TABLE 语句
+-- 示例：
+
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);"></textarea>
+                    <div class="sample-btns">
+                        <button class="sample-btn" onclick="loadSample('user')">👤 用户表</button>
+                        <button class="sample-btn" onclick="loadSample('blog')">📝 博客系统</button>
+                        <button class="sample-btn" onclick="loadSample('shop')">🛒 电商系统</button>
+                        <button class="sample-btn" onclick="loadSample('school')">🎓 教务系统</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="3" y1="9" x2="21" y2="9"/>
+                            <line x1="9" y1="21" x2="9" y2="9"/>
+                        </svg>
+                        数据表图预览
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="exportPNG()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                            </svg>
+                            导出 PNG
+                        </button>
+                        <button class="btn btn-secondary" onclick="printDiagram()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 6 2 18 2 18 9"/>
+                                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                                <rect x="6" y="14" width="12" height="8"/>
+                            </svg>
+                            打印
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-container">
+                    <div class="preview-area" id="previewArea">
+                        <div class="empty-state" id="emptyState">
+                            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="3" y1="9" x2="21" y2="9"/>
+                                <line x1="9" y1="21" x2="9" y2="9"/>
+                            </svg>
+                            <h3>暂无数据表</h3>
+                            <p>在左侧输入 SQL CREATE TABLE 语句，然后点击"生成图表"按钮，即可生成美观的数据表图</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-bar">
+                    <div class="style-settings">
+                        <div class="setting-item">
+                            <label>字体大小</label>
+                            <input type="range" id="fontSize" min="12" max="18" value="14" onchange="updateStyle()">
+                        </div>
+                        <div class="setting-item">
+                            <label>圆角</label>
+                            <input type="range" id="borderRadius" min="0" max="20" value="16" onchange="updateStyle()">
+                        </div>
+                        <div class="setting-item">
+                            <label>阴影</label>
+                            <input type="range" id="shadowIntensity" min="0" max="50" value="30" onchange="updateStyle()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="legend" id="legend" style="display: none;">
+            <div class="legend-item">
+                <span class="legend-dot pk"></span>
+                <span>PK 主键</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot fk"></span>
+                <span>FK 外键</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot uk"></span>
+                <span>UK 唯一键</span>
+            </div>
+        </div>
+
+        <div class="toast" id="toast">操作成功！</div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const sampleSQL = {
+            user: `-- 用户表
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    nickname VARCHAR(50),
+    avatar VARCHAR(255),
+    phone VARCHAR(20),
+    status TINYINT DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);`,
+
+            blog: `-- 博客系统数据表
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    avatar VARCHAR(255),
+    bio TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    slug VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    parent_id INT,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    category_id INT,
+    title VARCHAR(200) NOT NULL,
+    slug VARCHAR(200) NOT NULL UNIQUE,
+    content TEXT,
+    excerpt TEXT,
+    featured_image VARCHAR(255),
+    view_count INT DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'draft',
+    published_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE tags (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    slug VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE post_tags (
+    post_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    PRIMARY KEY (post_id, tag_id),
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+);`,
+
+            shop: `-- 电商系统数据表
+CREATE TABLE customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(20),
+    real_name VARCHAR(50),
+    gender VARCHAR(10),
+    birthday DATE,
+    avatar VARCHAR(255),
+    points INT DEFAULT 0,
+    level VARCHAR(20) DEFAULT 'bronze',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    category_id INT NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    subtitle VARCHAR(200),
+    price DECIMAL(10,2) NOT NULL,
+    original_price DECIMAL(10,2),
+    stock INT DEFAULT 0,
+    sales_count INT DEFAULT 0,
+    cover_image VARCHAR(255),
+    description TEXT,
+    detail TEXT,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_no VARCHAR(50) NOT NULL UNIQUE,
+    customer_id INT NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    discount_amount DECIMAL(10,2) DEFAULT 0,
+    pay_amount DECIMAL(10,2) NOT NULL,
+    pay_status VARCHAR(20) DEFAULT 'pending',
+    pay_method VARCHAR(20),
+    pay_time TIMESTAMP,
+    shipping_status VARCHAR(20) DEFAULT 'unshipped',
+    shipping_no VARCHAR(100),
+    shipping_time TIMESTAMP,
+    receive_time TIMESTAMP,
+    address_id INT,
+    remark TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+
+CREATE TABLE order_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    cover_image VARCHAR(255),
+    price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);`,
+
+            school: `-- 教务系统数据表
+CREATE TABLE students (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_no VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    gender VARCHAR(10),
+    birthday DATE,
+    id_card VARCHAR(20),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    department VARCHAR(100),
+    major VARCHAR(100),
+    class_name VARCHAR(50),
+    enrollment_year INT,
+    graduation_year INT,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE teachers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    teacher_no VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    gender VARCHAR(10),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    department VARCHAR(100),
+    title VARCHAR(50),
+    research_area VARCHAR(200),
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE courses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    course_no VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    credit DECIMAL(3,1) NOT NULL,
+    hours INT NOT NULL,
+    department VARCHAR(100),
+    description TEXT,
+    semester VARCHAR(20),
+    max_students INT,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE course_selections (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id INT NOT NULL,
+    course_id INT NOT NULL,
+    teacher_id INT,
+    academic_year VARCHAR(20),
+    semester VARCHAR(10),
+    score DECIMAL(5,2),
+    grade VARCHAR(10),
+    status VARCHAR(20) DEFAULT 'selected',
+    selected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (teacher_id) REFERENCES teachers(id),
+    UNIQUE KEY unique_selection (student_id, course_id, academic_year, semester)
+);`
+        };
+
+        function loadSample(type) {
+            document.getElementById('sqlInput').value = sampleSQL[type];
+            generateDiagram();
+        }
+
+        function clearSQL() {
+            document.getElementById('sqlInput').value = '';
+            document.getElementById('previewArea').innerHTML = `
+                <div class="empty-state" id="emptyState">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="3" y1="9" x2="21" y2="9"/>
+                        <line x1="9" y1="21" x2="9" y2="9"/>
+                    </svg>
+                    <h3>暂无数据表</h3>
+                    <p>在左侧输入 SQL CREATE TABLE 语句，然后点击"生成图表"按钮，即可生成美观的数据表图</p>
+                </div>
+            `;
+            document.getElementById('legend').style.display = 'none';
+        }
+
+        function parseSQL(sql) {
+            const tables = [];
+            const createTableRegex = /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`"']?(\w+)[`"']?\s*\(([\s\S]*?)\)(?:\s*ENGINE.*?)?(?:\s*;|$)/gi;
+            
+            let match;
+            while ((match = createTableRegex.exec(sql)) !== null) {
+                const tableName = match[1];
+                const columnsStr = match[2];
+                const columns = parseColumns(columnsStr);
+                
+                if (columns.length > 0) {
+                    tables.push({ name: tableName, columns });
+                }
+            }
+            
+            return tables;
+        }
+
+        function parseColumns(columnsStr) {
+            const columns = [];
+            const lines = columnsStr.split(',');
+            
+            let currentConstraint = {};
+            
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                
+                const upperLine = line.toUpperCase();
+                
+                if (upperLine.includes('PRIMARY KEY') || 
+                    upperLine.includes('FOREIGN KEY') || 
+                    upperLine.includes('UNIQUE') ||
+                    upperLine.includes('INDEX') ||
+                    upperLine.includes('KEY ') ||
+                    upperLine.includes('CONSTRAINT')) {
+                    currentConstraint = parseConstraint(line);
+                    continue;
+                }
+                
+                const columnMatch = line.match(/^[`"']?(\w+)[`"']?\s+(\w+(?:\s*\([^)]+\))?)/i);
+                if (columnMatch) {
+                    const name = columnMatch[1];
+                    const type = columnMatch[2].toUpperCase();
+                    const isPrimary = upperLine.includes('PRIMARY KEY') || currentConstraint.isPK;
+                    const isForeign = upperLine.includes('FOREIGN KEY') || currentConstraint.isFK;
+                    const isUnique = upperLine.includes('UNIQUE') || currentConstraint.isUK;
+                    
+                    if (currentConstraint.refField && !isForeign) {
+                        columns.push({
+                            name,
+                            type,
+                            isPrimary,
+                            isForeign: true,
+                            references: currentConstraint.refTable + '.' + currentConstraint.refField,
+                            isUnique
+                        });
+                    } else {
+                        columns.push({
+                            name,
+                            type,
+                            isPrimary,
+                            isForeign,
+                            references: currentConstraint.isFK ? (currentConstraint.refTable + '.' + currentConstraint.refField) : null,
+                            isUnique
+                        });
+                    }
+                    
+                    currentConstraint = {};
+                }
+            }
+            
+            return columns;
+        }
+
+        function parseConstraint(line) {
+            const constraint = {};
+            const upper = line.toUpperCase();
+            
+            if (upper.includes('PRIMARY KEY')) {
+                constraint.isPK = true;
+                const match = line.match(/\(([^)]+)\)/);
+                if (match) {
+                    constraint.pkField = match[1].split(',').map(s => s.trim().replace(/[`"']/g, ''));
+                }
+            }
+            
+            if (upper.includes('FOREIGN KEY')) {
+                constraint.isFK = true;
+                const fkMatch = line.match(/FOREIGN\s+KEY\s*[(`]?(\w*)[)`]?\s*REFERENCES\s+[`"']?(\w+)[`"']?\s*[(`]?(\w*)[)`]?/i);
+                if (fkMatch) {
+                    constraint.fkField = fkMatch[1];
+                    constraint.refTable = fkMatch[2];
+                    constraint.refField = fkMatch[3];
+                }
+            }
+            
+            if (upper.includes('UNIQUE') || upper.includes('KEY ') && upper.includes('UNIQUE')) {
+                constraint.isUK = true;
+            }
+            
+            return constraint;
+        }
+
+        function generateDiagram() {
+            const sql = document.getElementById('sqlInput').value;
+            if (!sql.trim()) {
+                showToast('请输入 SQL 语句');
+                return;
+            }
+            
+            const tables = parseSQL(sql);
+            
+            if (tables.length === 0) {
+                showToast('未检测到有效的数据表，请检查 SQL 语法');
+                return;
+            }
+            
+            const previewArea = document.getElementById('previewArea');
+            previewArea.innerHTML = '';
+            
+            tables.forEach((table, index) => {
+                const card = createTableCard(table, index);
+                previewArea.appendChild(card);
+            });
+            
+            document.getElementById('legend').style.display = 'flex';
+            showToast(`成功生成 ${tables.length} 个数据表`);
+        }
+
+        function createTableCard(table, index) {
+            const card = document.createElement('div');
+            card.className = 'table-card';
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            const header = document.createElement('div');
+            header.className = 'table-header';
+            header.innerHTML = `
+                <svg class="table-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                </svg>
+                ${table.name}
+            `;
+            
+            const body = document.createElement('div');
+            body.className = 'table-body';
+            
+            table.columns.forEach(col => {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                
+                let badges = '';
+                if (col.isPrimary) badges += '<span class="pk">🔑</span>';
+                else if (col.isForeign) badges += '<span class="fk">🔗</span>';
+                
+                let keyBadge = '';
+                if (col.isPrimary) keyBadge = '<span class="field-key pk">PK</span>';
+                else if (col.isForeign) keyBadge = '<span class="field-key fk">FK</span>';
+                else if (col.isUnique) keyBadge = '<span class="field-key uk">UK</span>';
+                
+                row.innerHTML = `
+                    <div class="field-name">${badges}${col.name}</div>
+                    <div class="field-type">${col.type}</div>
+                    <div>${keyBadge}</div>
+                `;
+                
+                body.appendChild(row);
+            });
+            
+            card.appendChild(header);
+            card.appendChild(body);
+            
+            return card;
+        }
+
+        function updateStyle() {
+            const fontSize = document.getElementById('fontSize').value;
+            const borderRadius = document.getElementById('borderRadius').value;
+            const shadowIntensity = document.getElementById('shadowIntensity').value;
+            
+            document.documentElement.style.setProperty('--font-size-base', fontSize + 'px');
+            
+            document.querySelectorAll('.table-card').forEach(card => {
+                card.style.borderRadius = borderRadius + 'px';
+                card.style.boxShadow = `0 8px ${shadowIntensity}px var(--shadow)`;
+            });
+            
+            document.querySelectorAll('.field-row, .table-header, .panel-title, .btn, .sample-btn, .setting-item select, .theme-btn, .legend').forEach(el => {
+                el.style.fontSize = fontSize + 'px';
+            });
+        }
+
+        function exportPNG() {
+            const previewArea = document.getElementById('previewArea');
+            if (previewArea.querySelector('.empty-state')) {
+                showToast('请先生成数据表图');
+                return;
+            }
+            
+            showToast('正在导出图片...');
+            
+            html2canvas(previewArea, {
+                backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-main'),
+                scale: 2,
+                logging: false,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `database-diagram-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('图片导出成功！');
+            }).catch(() => {
+                showToast('导出失败，请重试');
+            });
+        }
+
+        function printDiagram() {
+            window.print();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const theme = this.dataset.theme;
+                document.body.dataset.theme = theme;
+                
+                if (theme === 'dark' || theme === 'tech') {
+                    document.body.setAttribute('data-theme', theme);
+                } else {
+                    document.body.removeAttribute('data-theme');
+                    document.body.setAttribute('data-theme', theme);
+                }
+            });
+        });
+
+        document.getElementById('sqlInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+        });
+    </script>
+</body>
+</html>
