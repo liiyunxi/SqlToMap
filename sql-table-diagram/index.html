@@ -24,7 +24,6 @@
             --fk-color: #27ae60;
             --type-color: #e67e22;
         }
-
         [data-theme="dark"] {
             --primary: #3498db;
             --primary-light: #5dade2;
@@ -40,7 +39,6 @@
             --table-row-alt: #1a1a2e;
             --table-border: #34495e;
         }
-
         [data-theme="tech"] {
             --primary: #00d9ff;
             --primary-light: #4df0ff;
@@ -56,7 +54,6 @@
             --table-row-alt: #0a0a0a;
             --table-border: #333;
         }
-
         [data-theme="academic"] {
             --primary: #1a5276;
             --primary-light: #2980b9;
@@ -71,9 +68,7 @@
             --table-header-text: #fdfefe;
             --table-row-alt: #f8f9f9;
             --table-border: #d5dbdb;
-            --font-family: 'Noto Sans SC', serif;
         }
-
         [data-theme="minimal"] {
             --primary: #2c3e50;
             --primary-light: #34495e;
@@ -89,7 +84,6 @@
             --table-row-alt: #fbfcfc;
             --table-border: #ecf0f1;
         }
-
         [data-theme="elegant"] {
             --primary: #6c5ce7;
             --primary-light: #a29bfe;
@@ -105,13 +99,7 @@
             --table-row-alt: #faf8ff;
             --table-border: #d4d1f0;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-main);
@@ -119,13 +107,7 @@
             min-height: 100vh;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
+        .app-container { display: flex; flex-direction: column; min-height: 100vh; }
         header {
             background: var(--secondary);
             border-bottom: 1px solid var(--border);
@@ -138,561 +120,151 @@
             z-index: 100;
             backdrop-filter: blur(10px);
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
+        .logo { display: flex; align-items: center; gap: 0.75rem; }
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 1.2rem;
             box-shadow: 0 4px 15px var(--shadow);
         }
-
         .logo h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.4rem; font-weight: 600;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .logo span {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            font-weight: 400;
-        }
-
-        .theme-selector {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
+        .logo span { font-size: 0.75rem; color: var(--text-light); font-weight: 400; }
         .db-selector select {
             padding: 0.5rem 1rem;
             border: 2px solid var(--border);
             background: var(--secondary);
             color: var(--text);
             border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            font-family: inherit;
+            font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; font-family: inherit;
             min-width: 120px;
         }
-
-        .db-selector select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
+        .db-selector select:focus { outline: none; border-color: var(--primary); }
+        .theme-selector { display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .theme-btn {
             padding: 0.5rem 1rem;
             border: 2px solid var(--border);
             background: var(--secondary);
             color: var(--text);
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-family: inherit;
+            cursor: pointer; font-size: 0.85rem; font-weight: 500;
+            transition: all 0.3s ease; font-family: inherit;
         }
-
-        .theme-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .theme-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        main {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 0;
-        }
-
-        @media (max-width: 1024px) {
-            main {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .editor-panel {
-            background: var(--secondary);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .panel-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-title {
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .panel-title svg {
-            width: 18px;
-            height: 18px;
-            color: var(--primary);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
+        .theme-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .theme-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        main { flex: 1; display: grid; grid-template-columns: 1fr 1.2fr; gap: 0; }
+        @media (max-width: 1024px) { main { grid-template-columns: 1fr; } }
+        .editor-panel { background: var(--secondary); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+        .panel-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .panel-title { font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .panel-title svg { width: 18px; height: 18px; color: var(--primary); }
+        .btn-group { display: flex; gap: 0.5rem; }
         .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
+            padding: 0.5rem 1rem; border: none; border-radius: 6px;
+            cursor: pointer; font-size: 0.85rem; font-weight: 500;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
+            display: flex; align-items: center; gap: 0.4rem;
             font-family: inherit;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px var(--shadow);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .sql-input {
-            flex: 1;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-        }
-
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--shadow); }
+        .btn-secondary { background: var(--secondary); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+        .sql-input { flex: 1; padding: 1.5rem; display: flex; flex-direction: column; }
         .sql-textarea {
-            flex: 1;
-            width: 100%;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            line-height: 1.7;
-            resize: none;
-            background: var(--bg-main);
-            color: var(--text);
+            flex: 1; width: 100%; border: 2px solid var(--border); border-radius: 12px;
+            padding: 1.25rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+            line-height: 1.7; resize: none; background: var(--bg-main); color: var(--text);
             transition: all 0.3s ease;
         }
-
-        .sql-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--shadow);
-        }
-
-        .sql-textarea::placeholder {
-            color: var(--text-light);
-        }
-
-        .sample-btns {
-            margin-top: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
+        .sql-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--shadow); }
+        .sql-textarea::placeholder { color: var(--text-light); }
+        .sample-btns { margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .sample-btn {
-            padding: 0.4rem 0.8rem;
-            background: var(--bg-main);
-            border: 1px dashed var(--border);
-            border-radius: 6px;
-            color: var(--text-light);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
+            padding: 0.4rem 0.8rem; background: var(--bg-main); border: 1px dashed var(--border);
+            border-radius: 6px; color: var(--text-light); font-size: 0.8rem;
+            cursor: pointer; transition: all 0.3s ease; font-family: inherit;
         }
-
-        .sample-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            border-style: solid;
-        }
-
-        .preview-panel {
-            background: var(--bg-main);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .preview-container {
-            flex: 1;
-            overflow: auto;
-            padding: 2rem;
-        }
-
-        .preview-area {
-            min-height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            align-content: flex-start;
-        }
-
+        .sample-btn:hover { border-color: var(--primary); color: var(--primary); border-style: solid; }
+        .preview-panel { background: var(--bg-main); display: flex; flex-direction: column; overflow: hidden; }
+        .preview-container { flex: 1; overflow: auto; padding: 2rem; }
+        .preview-area { min-height: 100%; display: flex; flex-wrap: wrap; gap: 2rem; align-content: flex-start; }
         .table-card {
-            background: var(--secondary);
-            border-radius: 16px;
-            box-shadow: 0 8px 30px var(--shadow);
-            overflow: hidden;
+            background: var(--secondary); border-radius: 16px;
+            box-shadow: 0 8px 30px var(--shadow); overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInUp 0.5s ease forwards;
-            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards; opacity: 0;
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .table-card:nth-child(1) { animation-delay: 0.1s; }
         .table-card:nth-child(2) { animation-delay: 0.2s; }
         .table-card:nth-child(3) { animation-delay: 0.3s; }
         .table-card:nth-child(4) { animation-delay: 0.4s; }
         .table-card:nth-child(5) { animation-delay: 0.5s; }
-
-        .table-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px var(--shadow);
-        }
-
+        .table-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--shadow); }
         .table-header {
-            background: var(--table-header-bg);
-            color: var(--table-header-text);
-            padding: 1rem 1.25rem;
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
+            background: var(--table-header-bg); color: var(--table-header-text);
+            padding: 1rem 1.25rem; font-weight: 600; font-size: 1rem;
+            display: flex; align-items: center; gap: 0.6rem;
         }
-
-        [data-theme="tech"] .table-header,
-        [data-theme="elegant"] .table-header {
-            background: var(--table-header-bg);
-        }
-
-        .table-icon {
-            width: 20px;
-            height: 20px;
-            opacity: 0.9;
-        }
-
-        .table-body {
-            padding: 0;
-        }
-
+        .table-icon { width: 20px; height: 20px; opacity: 0.9; }
+        .table-body { padding: 0; }
         .field-row {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr auto;
-            gap: 0.75rem;
-            padding: 0.75rem 1.25rem;
-            border-bottom: 1px solid var(--table-border);
-            align-items: center;
-            font-size: 0.9rem;
-            transition: background 0.2s ease;
+            display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 0.75rem;
+            padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--table-border);
+            align-items: center; font-size: 0.9rem; transition: background 0.2s ease;
         }
-
-        .field-row:last-child {
-            border-bottom: none;
-        }
-
-        .field-row:nth-child(even) {
-            background: var(--table-row-alt);
-        }
-
-        .field-row:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .field-name {
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .field-name .pk {
-            color: var(--pk-color);
-            font-weight: 700;
-            font-size: 0.75rem;
-        }
-
-        .field-name .fk {
-            color: var(--fk-color);
-            font-weight: 700;
-            font-size: 0.75rem;
-        }
-
-        .field-row:hover .pk,
-        .field-row:hover .fk {
-            color: #ffd700;
-        }
-
-        .field-type {
-            color: var(--type-color);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-        }
-
-        .field-row:hover .field-type {
-            color: rgba(255,255,255,0.8);
-        }
-
-        .field-key {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .field-key.pk {
-            background: rgba(142, 68, 173, 0.15);
-            color: var(--pk-color);
-        }
-
-        .field-key.fk {
-            background: rgba(39, 174, 96, 0.15);
-            color: var(--fk-color);
-        }
-
-        .field-key.uk {
-            background: rgba(241, 196, 15, 0.15);
-            color: #d4ac0d;
-        }
-
-        .field-row:hover .field-key.pk,
-        .field-row:hover .field-key.fk,
-        .field-row:hover .field-key.uk {
-            background: rgba(255,255,255,0.2);
-            color: #ffd700;
-        }
-
-        .empty-state {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            text-align: center;
-            padding: 3rem;
-        }
-
-        .empty-icon {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 1.5rem;
-            opacity: 0.5;
-        }
-
-        .empty-state h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .empty-state p {
-            font-size: 0.95rem;
-            max-width: 400px;
-        }
-
-        .settings-bar {
-            background: var(--secondary);
-            border-top: 1px solid var(--border);
-            padding: 1rem 1.5rem;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .setting-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .setting-item label {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            white-space: nowrap;
-        }
-
-        .setting-item select,
-        .setting-item input[type="range"] {
-            padding: 0.4rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background: var(--bg-main);
-            color: var(--text);
-            font-size: 0.85rem;
-            font-family: inherit;
-        }
-
-        .setting-item input[type="range"] {
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .style-settings {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .legend {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background: var(--secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            font-size: 0.8rem;
-            display: flex;
-            gap: 1rem;
-            box-shadow: 0 4px 20px var(--shadow);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
+        .field-row:last-child { border-bottom: none; }
+        .field-row:nth-child(even) { background: var(--table-row-alt); }
+        .field-row:hover { background: var(--primary); color: white; }
+        .field-name { font-weight: 500; display: flex; align-items: center; gap: 0.4rem; }
+        .field-name .pk { color: var(--pk-color); font-weight: 700; font-size: 0.75rem; }
+        .field-name .fk { color: var(--fk-color); font-weight: 700; font-size: 0.75rem; }
+        .field-row:hover .pk, .field-row:hover .fk { color: #ffd700; }
+        .field-type { color: var(--type-color); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+        .field-row:hover .field-type { color: rgba(255,255,255,0.8); }
+        .field-key { font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
+        .field-key.pk { background: rgba(142, 68, 173, 0.15); color: var(--pk-color); }
+        .field-key.fk { background: rgba(39, 174, 96, 0.15); color: var(--fk-color); }
+        .field-key.uk { background: rgba(241, 196, 15, 0.15); color: #d4ac0d; }
+        .field-row:hover .field-key.pk, .field-row:hover .field-key.fk, .field-row:hover .field-key.uk { background: rgba(255,255,255,0.2); color: #ffd700; }
+        .field-comment { grid-column: 1 / -1; font-size: 0.8rem; color: var(--text-light); font-style: italic; padding-left: 1.5rem; margin-top: -0.25rem; }
+        .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-light); text-align: center; padding: 3rem; }
+        .empty-icon { width: 120px; height: 120px; margin-bottom: 1.5rem; opacity: 0.5; }
+        .empty-state h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text); }
+        .empty-state p { font-size: 0.95rem; max-width: 400px; }
+        .settings-bar { background: var(--secondary); border-top: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+        .setting-item { display: flex; align-items: center; gap: 0.75rem; }
+        .setting-item label { font-size: 0.85rem; color: var(--text-light); white-space: nowrap; }
+        .setting-item input[type="range"] { padding: 0.4rem 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-main); color: var(--text); font-size: 0.85rem; font-family: inherit; width: 100px; cursor: pointer; }
+        .legend { position: fixed; bottom: 1rem; right: 1rem; background: var(--secondary); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.8rem; display: flex; gap: 1rem; box-shadow: 0 4px 20px var(--shadow); }
+        .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
         .legend-dot.pk { background: var(--pk-color); }
         .legend-dot.fk { background: var(--fk-color); }
         .legend-dot.uk { background: #d4ac0d; }
-
-        @media print {
-            header, .editor-panel, .settings-bar, .legend, .btn-group {
-                display: none !important;
-            }
-            main {
-                display: block;
-            }
-            .preview-panel {
-                background: white;
-            }
-            .table-card {
-                break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--primary);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-weight: 500;
-            opacity: 0;
-            transition: all 0.4s ease;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-main);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
+        @media print { header, .editor-panel, .settings-bar, .legend, .btn-group { display: none !important; } main { display: block; } .preview-panel { background: white; } .table-card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; } }
+        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 1rem 2rem; border-radius: 10px; font-weight: 500; opacity: 0; transition: all 0.4s ease; z-index: 1000; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
     </style>
 </head>
 <body>
     <div class="app-container" id="app">
         <header>
             <div class="logo">
-                <div class="logo-icon">📊</div>
+                <div class="logo-icon">D</div>
                 <div>
                     <h1>SQL 数据表图生成器</h1>
                     <span>毕设论文专用</span>
@@ -712,27 +284,20 @@
                 <button class="theme-btn" data-theme="dark">暗黑系</button>
             </div>
         </header>
-
         <main>
             <div class="editor-panel">
                 <div class="panel-header">
                     <div class="panel-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 7h16M4 12h16M4 17h10"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
                         SQL 输入
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="clearSQL()">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
                             清空
                         </button>
                         <button class="btn btn-primary" onclick="generateDiagram()">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5 3 19 12 5 21 5 3"/>
-                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                             生成图表
                         </button>
                     </div>
@@ -742,51 +307,39 @@
 -- 示例：
 
 CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
+    username VARCHAR(50) NOT NULL UNIQUE COMMENT '用户名',
+    email VARCHAR(100) NOT NULL COMMENT '邮箱',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+) COMMENT='用户表';
 
 CREATE TABLE posts (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    title VARCHAR(200) NOT NULL,
-    content TEXT,
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '文章ID',
+    user_id INT NOT NULL COMMENT '作者ID',
+    title VARCHAR(200) NOT NULL COMMENT '标题',
+    content TEXT COMMENT '内容',
     FOREIGN KEY (user_id) REFERENCES users(id)
 );"></textarea>
                     <div class="sample-btns">
-                        <button class="sample-btn" onclick="loadSample('user')">👤 用户表</button>
-                        <button class="sample-btn" onclick="loadSample('blog')">📝 博客系统</button>
-                        <button class="sample-btn" onclick="loadSample('school')">🎓 教务系统</button>
+                        <button class="sample-btn" onclick="loadSample('user')">用户表</button>
+                        <button class="sample-btn" onclick="loadSample('blog')">博客系统</button>
+                        <button class="sample-btn" onclick="loadSample('school')">教务系统</button>
                     </div>
                 </div>
             </div>
-
             <div class="preview-panel">
                 <div class="panel-header">
                     <div class="panel-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="3" y1="9" x2="21" y2="9"/>
-                            <line x1="9" y1="21" x2="9" y2="9"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                         数据表图预览
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="exportPNG()">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                             导出 PNG
                         </button>
                         <button class="btn btn-secondary" onclick="printDiagram()">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="6 9 6 2 18 2 18 9"/>
-                                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
-                                <rect x="6" y="14" width="12" height="8"/>
-                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
                             打印
                         </button>
                     </div>
@@ -794,427 +347,123 @@ CREATE TABLE posts (
                 <div class="preview-container">
                     <div class="preview-area" id="previewArea">
                         <div class="empty-state" id="emptyState">
-                            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="3" y1="9" x2="21" y2="9"/>
-                                <line x1="9" y1="21" x2="9" y2="9"/>
-                            </svg>
+                            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                             <h3>暂无数据表</h3>
                             <p>在左侧输入 SQL CREATE TABLE 语句，然后点击"生成图表"按钮，即可生成美观的数据表图</p>
                         </div>
                     </div>
                 </div>
                 <div class="settings-bar">
-                    <div class="style-settings">
-                        <div class="setting-item">
-                            <label>字体大小</label>
-                            <input type="range" id="fontSize" min="12" max="18" value="14" onchange="updateStyle()">
-                        </div>
-                        <div class="setting-item">
-                            <label>圆角</label>
-                            <input type="range" id="borderRadius" min="0" max="20" value="16" onchange="updateStyle()">
-                        </div>
-                        <div class="setting-item">
-                            <label>阴影</label>
-                            <input type="range" id="shadowIntensity" min="0" max="50" value="30" onchange="updateStyle()">
-                        </div>
+                    <div class="setting-item">
+                        <label>字体大小</label>
+                        <input type="range" id="fontSize" min="12" max="18" value="14" onchange="updateStyle()">
+                    </div>
+                    <div class="setting-item">
+                        <label>圆角</label>
+                        <input type="range" id="borderRadius" min="0" max="20" value="16" onchange="updateStyle()">
+                    </div>
+                    <div class="setting-item">
+                        <label>阴影</label>
+                        <input type="range" id="shadowIntensity" min="0" max="50" value="30" onchange="updateStyle()">
                     </div>
                 </div>
             </div>
         </main>
-
         <div class="legend" id="legend" style="display: none;">
-            <div class="legend-item">
-                <span class="legend-dot pk"></span>
-                <span>PK 主键</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-dot fk"></span>
-                <span>FK 外键</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-dot uk"></span>
-                <span>UK 唯一键</span>
-            </div>
+            <div class="legend-item"><span class="legend-dot pk"></span><span>PK 主键</span></div>
+            <div class="legend-item"><span class="legend-dot fk"></span><span>FK 外键</span></div>
+            <div class="legend-item"><span class="legend-dot uk"></span><span>UK 唯一键</span></div>
         </div>
-
         <div class="toast" id="toast">操作成功！</div>
     </div>
-
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-        let currentDbType = 'mysql';
-
-        const sampleSQL = {
-            user_mysql: `-- 用户表 (MySQL)
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    nickname VARCHAR(50),
-    avatar VARCHAR(255),
-    phone VARCHAR(20),
-    status TINYINT DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);`,
-
-            user_postgresql: `-- 用户表 (PostgreSQL)
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    nickname VARCHAR(50),
-    avatar VARCHAR(255),
-    phone VARCHAR(20),
-    status SMALLINT DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);`,
-
-            blog_mysql: `-- 博客系统数据表 (MySQL)
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    avatar VARCHAR(255),
-    bio TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE categories (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    slug VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    parent_id INT,
-    sort_order INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE posts (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    category_id INT,
-    title VARCHAR(200) NOT NULL,
-    slug VARCHAR(200) NOT NULL UNIQUE,
-    content TEXT,
-    excerpt TEXT,
-    featured_image VARCHAR(255),
-    view_count INT DEFAULT 0,
-    status VARCHAR(20) DEFAULT 'draft',
-    published_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (category_id) REFERENCES categories(id)
-);
-
-CREATE TABLE tags (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    slug VARCHAR(50) NOT NULL UNIQUE
-);
-
-CREATE TABLE post_tags (
-    post_id INT NOT NULL,
-    tag_id INT NOT NULL,
-    PRIMARY KEY (post_id, tag_id),
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
-);`,
-
-            blog_postgresql: `-- 博客系统数据表 (PostgreSQL)
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    avatar VARCHAR(255),
-    bio TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE categories (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    slug VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    parent_id INTEGER,
-    sort_order INTEGER DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE posts (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    category_id INTEGER,
-    title VARCHAR(200) NOT NULL,
-    slug VARCHAR(200) NOT NULL UNIQUE,
-    content TEXT,
-    excerpt TEXT,
-    featured_image VARCHAR(255),
-    view_count INTEGER DEFAULT 0,
-    status VARCHAR(20) DEFAULT 'draft',
-    published_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (category_id) REFERENCES categories(id)
-);
-
-CREATE TABLE tags (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    slug VARCHAR(50) NOT NULL UNIQUE
-);
-
-CREATE TABLE post_tags (
-    post_id INTEGER NOT NULL,
-    tag_id INTEGER NOT NULL,
-    PRIMARY KEY (post_id, tag_id),
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
-);`,
-
-            school_mysql: `-- 教务系统数据表 (MySQL)
-CREATE TABLE students (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    student_no VARCHAR(20) NOT NULL UNIQUE,
-    name VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    gender VARCHAR(10),
-    birthday DATE,
-    id_card VARCHAR(20),
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    department VARCHAR(100),
-    major VARCHAR(100),
-    class_name VARCHAR(50),
-    enrollment_year INT,
-    graduation_year INT,
-    status VARCHAR(20) DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE teachers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    teacher_no VARCHAR(20) NOT NULL UNIQUE,
-    name VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    gender VARCHAR(10),
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    department VARCHAR(100),
-    title VARCHAR(50),
-    research_area VARCHAR(200),
-    status VARCHAR(20) DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE courses (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    course_no VARCHAR(20) NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL,
-    credit DECIMAL(3,1) NOT NULL,
-    hours INT NOT NULL,
-    department VARCHAR(100),
-    description TEXT,
-    semester VARCHAR(20),
-    max_students INT,
-    status VARCHAR(20) DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE course_selections (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    student_id INT NOT NULL,
-    course_id INT NOT NULL,
-    teacher_id INT,
-    academic_year VARCHAR(20),
-    semester VARCHAR(10),
-    score DECIMAL(5,2),
-    grade VARCHAR(10),
-    status VARCHAR(20) DEFAULT 'selected',
-    selected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES students(id),
-    FOREIGN KEY (course_id) REFERENCES courses(id),
-    FOREIGN KEY (teacher_id) REFERENCES teachers(id),
-    UNIQUE KEY unique_selection (student_id, course_id, academic_year, semester)
-);`,
-
-            school_postgresql: `-- 教务系统数据表 (PostgreSQL)
-CREATE TABLE students (
-    id SERIAL PRIMARY KEY,
-    student_no VARCHAR(20) NOT NULL UNIQUE,
-    name VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    gender VARCHAR(10),
-    birthday DATE,
-    id_card VARCHAR(20),
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    department VARCHAR(100),
-    major VARCHAR(100),
-    class_name VARCHAR(50),
-    enrollment_year INTEGER,
-    graduation_year INTEGER,
-    status VARCHAR(20) DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE teachers (
-    id SERIAL PRIMARY KEY,
-    teacher_no VARCHAR(20) NOT NULL UNIQUE,
-    name VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    gender VARCHAR(10),
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    department VARCHAR(100),
-    title VARCHAR(50),
-    research_area VARCHAR(200),
-    status VARCHAR(20) DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE courses (
-    id SERIAL PRIMARY KEY,
-    course_no VARCHAR(20) NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL,
-    credit NUMERIC(3,1) NOT NULL,
-    hours INTEGER NOT NULL,
-    department VARCHAR(100),
-    description TEXT,
-    semester VARCHAR(20),
-    max_students INTEGER,
-    status VARCHAR(20) DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE course_selections (
-    id SERIAL PRIMARY KEY,
-    student_id INTEGER NOT NULL,
-    course_id INTEGER NOT NULL,
-    teacher_id INTEGER,
-    academic_year VARCHAR(20),
-    semester VARCHAR(10),
-    score NUMERIC(5,2),
-    grade VARCHAR(10),
-    status VARCHAR(20) DEFAULT 'selected',
-    selected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES students(id),
-    FOREIGN KEY (course_id) REFERENCES courses(id),
-    FOREIGN KEY (teacher_id) REFERENCES teachers(id),
-    UNIQUE (student_id, course_id, academic_year, semester)
-);`
+        var currentDbType = 'mysql';
+        var sampleSQL = {
+            user_mysql: "-- 用户表 (MySQL)\nCREATE TABLE users (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',\n    username VARCHAR(50) NOT NULL UNIQUE COMMENT '用户名',\n    email VARCHAR(100) NOT NULL COMMENT '邮箱',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    nickname VARCHAR(50) COMMENT '昵称',\n    avatar VARCHAR(255) COMMENT '头像',\n    phone VARCHAR(20) COMMENT '手机号',\n    status TINYINT DEFAULT 1 COMMENT '状态',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'\n) COMMENT='用户信息表';",
+            user_postgresql: "-- 用户表 (PostgreSQL)\nCREATE TABLE users (\n    id SERIAL PRIMARY KEY COMMENT '用户ID',\n    username VARCHAR(50) NOT NULL UNIQUE COMMENT '用户名',\n    email VARCHAR(100) NOT NULL COMMENT '邮箱',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    nickname VARCHAR(50) COMMENT '昵称',\n    avatar VARCHAR(255) COMMENT '头像',\n    phone VARCHAR(20) COMMENT '手机号',\n    status SMALLINT DEFAULT 1 COMMENT '状态',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间'\n);",
+            blog_mysql: "-- 博客系统 (MySQL)\nCREATE TABLE users (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',\n    username VARCHAR(50) NOT NULL UNIQUE COMMENT '用户名',\n    email VARCHAR(100) NOT NULL COMMENT '邮箱',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    avatar VARCHAR(255) COMMENT '头像',\n    bio TEXT COMMENT '简介',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'\n) COMMENT='用户表';\n\nCREATE TABLE categories (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '分类ID',\n    name VARCHAR(50) NOT NULL COMMENT '分类名称',\n    slug VARCHAR(50) NOT NULL UNIQUE COMMENT 'URL别名',\n    description TEXT COMMENT '描述',\n    parent_id INT COMMENT '父分类ID',\n    sort_order INT DEFAULT 0 COMMENT '排序',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n) COMMENT='分类表';\n\nCREATE TABLE posts (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '文章ID',\n    user_id INT NOT NULL COMMENT '作者ID',\n    category_id INT COMMENT '分类ID',\n    title VARCHAR(200) NOT NULL COMMENT '标题',\n    slug VARCHAR(200) NOT NULL UNIQUE COMMENT 'URL别名',\n    content TEXT COMMENT '内容',\n    excerpt TEXT COMMENT '摘要',\n    view_count INT DEFAULT 0 COMMENT '浏览量',\n    status VARCHAR(20) DEFAULT 'draft' COMMENT '状态',\n    published_at TIMESTAMP COMMENT '发布时间',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (category_id) REFERENCES categories(id)\n) COMMENT='文章表';",
+            blog_postgresql: "-- 博客系统 (PostgreSQL)\nCREATE TABLE users (\n    id SERIAL PRIMARY KEY COMMENT '用户ID',\n    username VARCHAR(50) NOT NULL UNIQUE COMMENT '用户名',\n    email VARCHAR(100) NOT NULL COMMENT '邮箱',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    avatar VARCHAR(255) COMMENT '头像',\n    bio TEXT COMMENT '简介',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'\n);\n\nCREATE TABLE categories (\n    id SERIAL PRIMARY KEY COMMENT '分类ID',\n    name VARCHAR(50) NOT NULL COMMENT '分类名称',\n    slug VARCHAR(50) NOT NULL UNIQUE COMMENT 'URL别名',\n    description TEXT COMMENT '描述',\n    parent_id INTEGER COMMENT '父分类ID',\n    sort_order INTEGER DEFAULT 0 COMMENT '排序',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n);\n\nCREATE TABLE posts (\n    id SERIAL PRIMARY KEY COMMENT '文章ID',\n    user_id INTEGER NOT NULL COMMENT '作者ID',\n    category_id INTEGER COMMENT '分类ID',\n    title VARCHAR(200) NOT NULL COMMENT '标题',\n    slug VARCHAR(200) NOT NULL UNIQUE COMMENT 'URL别名',\n    content TEXT COMMENT '内容',\n    excerpt TEXT COMMENT '摘要',\n    view_count INTEGER DEFAULT 0 COMMENT '浏览量',\n    status VARCHAR(20) DEFAULT 'draft' COMMENT '状态',\n    published_at TIMESTAMP COMMENT '发布时间',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',\n    FOREIGN KEY (user_id) REFERENCES users(id),\n    FOREIGN KEY (category_id) REFERENCES categories(id)\n);",
+            school_mysql: "-- 教务系统 (MySQL)\nCREATE TABLE students (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '学生ID',\n    student_no VARCHAR(20) NOT NULL UNIQUE COMMENT '学号',\n    name VARCHAR(50) NOT NULL COMMENT '姓名',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    gender VARCHAR(10) COMMENT '性别',\n    birthday DATE COMMENT '生日',\n    id_card VARCHAR(20) COMMENT '身份证',\n    phone VARCHAR(20) COMMENT '手机',\n    email VARCHAR(100) COMMENT '邮箱',\n    department VARCHAR(100) COMMENT '院系',\n    major VARCHAR(100) COMMENT '专业',\n    class_name VARCHAR(50) COMMENT '班级',\n    enrollment_year INT COMMENT '入学年份',\n    status VARCHAR(20) DEFAULT 'active' COMMENT '状态',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n) COMMENT='学生表';\n\nCREATE TABLE teachers (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '教师ID',\n    teacher_no VARCHAR(20) NOT NULL UNIQUE COMMENT '工号',\n    name VARCHAR(50) NOT NULL COMMENT '姓名',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    gender VARCHAR(10) COMMENT '性别',\n    phone VARCHAR(20) COMMENT '手机',\n    email VARCHAR(100) COMMENT '邮箱',\n    department VARCHAR(100) COMMENT '院系',\n    title VARCHAR(50) COMMENT '职称',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n) COMMENT='教师表';\n\nCREATE TABLE courses (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '课程ID',\n    course_no VARCHAR(20) NOT NULL UNIQUE COMMENT '课程号',\n    name VARCHAR(100) NOT NULL COMMENT '课程名',\n    credit DECIMAL(3,1) NOT NULL COMMENT '学分',\n    hours INT NOT NULL COMMENT '学时',\n    department VARCHAR(100) COMMENT '院系',\n    description TEXT COMMENT '描述',\n    max_students INT COMMENT '最大人数',\n    status VARCHAR(20) DEFAULT 'active' COMMENT '状态',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n) COMMENT='课程表';\n\nCREATE TABLE course_selections (\n    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '选课ID',\n    student_id INT NOT NULL COMMENT '学生ID',\n    course_id INT NOT NULL COMMENT '课程ID',\n    teacher_id INT COMMENT '教师ID',\n    academic_year VARCHAR(20) COMMENT '学年',\n    semester VARCHAR(10) COMMENT '学期',\n    score DECIMAL(5,2) COMMENT '成绩',\n    grade VARCHAR(10) COMMENT '等级',\n    status VARCHAR(20) DEFAULT 'selected' COMMENT '状态',\n    selected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '选课时间',\n    FOREIGN KEY (student_id) REFERENCES students(id),\n    FOREIGN KEY (course_id) REFERENCES courses(id),\n    FOREIGN KEY (teacher_id) REFERENCES teachers(id),\n    UNIQUE KEY unique_selection (student_id, course_id, academic_year, semester)\n) COMMENT='选课表';",
+            school_postgresql: "-- 教务系统 (PostgreSQL)\nCREATE TABLE students (\n    id SERIAL PRIMARY KEY COMMENT '学生ID',\n    student_no VARCHAR(20) NOT NULL UNIQUE COMMENT '学号',\n    name VARCHAR(50) NOT NULL COMMENT '姓名',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    gender VARCHAR(10) COMMENT '性别',\n    birthday DATE COMMENT '生日',\n    id_card VARCHAR(20) COMMENT '身份证',\n    phone VARCHAR(20) COMMENT '手机',\n    email VARCHAR(100) COMMENT '邮箱',\n    department VARCHAR(100) COMMENT '院系',\n    major VARCHAR(100) COMMENT '专业',\n    class_name VARCHAR(50) COMMENT '班级',\n    enrollment_year INTEGER COMMENT '入学年份',\n    status VARCHAR(20) DEFAULT 'active' COMMENT '状态',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n);\n\nCREATE TABLE teachers (\n    id SERIAL PRIMARY KEY COMMENT '教师ID',\n    teacher_no VARCHAR(20) NOT NULL UNIQUE COMMENT '工号',\n    name VARCHAR(50) NOT NULL COMMENT '姓名',\n    password VARCHAR(255) NOT NULL COMMENT '密码',\n    gender VARCHAR(10) COMMENT '性别',\n    phone VARCHAR(20) COMMENT '手机',\n    email VARCHAR(100) COMMENT '邮箱',\n    department VARCHAR(100) COMMENT '院系',\n    title VARCHAR(50) COMMENT '职称',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n);\n\nCREATE TABLE courses (\n    id SERIAL PRIMARY KEY COMMENT '课程ID',\n    course_no VARCHAR(20) NOT NULL UNIQUE COMMENT '课程号',\n    name VARCHAR(100) NOT NULL COMMENT '课程名',\n    credit NUMERIC(3,1) NOT NULL COMMENT '学分',\n    hours INTEGER NOT NULL COMMENT '学时',\n    department VARCHAR(100) COMMENT '院系',\n    description TEXT COMMENT '描述',\n    max_students INTEGER COMMENT '最大人数',\n    status VARCHAR(20) DEFAULT 'active' COMMENT '状态',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'\n);\n\nCREATE TABLE course_selections (\n    id SERIAL PRIMARY KEY COMMENT '选课ID',\n    student_id INTEGER NOT NULL COMMENT '学生ID',\n    course_id INTEGER NOT NULL COMMENT '课程ID',\n    teacher_id INTEGER COMMENT '教师ID',\n    academic_year VARCHAR(20) COMMENT '学年',\n    semester VARCHAR(10) COMMENT '学期',\n    score NUMERIC(5,2) COMMENT '成绩',\n    grade VARCHAR(10) COMMENT '等级',\n    status VARCHAR(20) DEFAULT 'selected' COMMENT '状态',\n    selected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '选课时间',\n    FOREIGN KEY (student_id) REFERENCES students(id),\n    FOREIGN KEY (course_id) REFERENCES courses(id),\n    FOREIGN KEY (teacher_id) REFERENCES teachers(id),\n    UNIQUE (student_id, course_id, academic_year, semester)\n);"
         };
 
         function onDbTypeChange() {
             currentDbType = document.getElementById('dbType').value;
-            const placeholderText = currentDbType === 'mysql' 
-                ? `-- 输入您的 CREATE TABLE 语句 (MySQL)
--- 示例：
-
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE posts (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    title VARCHAR(200) NOT NULL,
-    content TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);`
-                : `-- 输入您的 CREATE TABLE 语句 (PostgreSQL)
--- 示例：
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE posts (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    title VARCHAR(200) NOT NULL,
-    content TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);`;
-            document.getElementById('sqlInput').placeholder = placeholderText;
         }
 
         function loadSample(type) {
-            const dbType = currentDbType;
-            const key = type + '_' + dbType;
-            document.getElementById('sqlInput').value = sampleSQL[key] || sampleSQL[type + '_mysql'] || sampleSQL[type];
+            var key = type + '_' + currentDbType;
+            var sql = sampleSQL[key] || sampleSQL[type + '_mysql'] || sampleSQL[type];
+            document.getElementById('sqlInput').value = sql;
             generateDiagram();
         }
 
         function clearSQL() {
             document.getElementById('sqlInput').value = '';
-            document.getElementById('previewArea').innerHTML = `
-                <div class="empty-state" id="emptyState">
-                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="3" y1="9" x2="21" y2="9"/>
-                        <line x1="9" y1="21" x2="9" y2="9"/>
-                    </svg>
-                    <h3>暂无数据表</h3>
-                    <p>在左侧输入 SQL CREATE TABLE 语句，然后点击"生成图表"按钮，即可生成美观的数据表图</p>
-                </div>
-            `;
+            document.getElementById('previewArea').innerHTML = '<div class="empty-state"><svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg><h3>暂无数据表</h3><p>在左侧输入 SQL CREATE TABLE 语句，然后点击"生成图表"按钮，即可生成美观的数据表图</p></div>';
             document.getElementById('legend').style.display = 'none';
         }
 
-        function parseSQL(sql, dbType = 'mysql') {
-            const tables = [];
-            const createTableRegex = /CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`"']?(\w+)[`"']?\s*\(([\s\S]*?)\)(?:\s*ENGINE.*?)?(?:\s*;|$)/gi;
+        function parseSQL(sql, dbType) {
+            dbType = dbType || 'mysql';
+            var tables = [];
             
-            let match;
-            while ((match = createTableRegex.exec(sql)) !== null) {
-                const tableName = match[1];
-                const columnsStr = match[2];
-                const columns = parseColumns(columnsStr, dbType);
+            var createStatements = sql.split(/CREATE\s+TABLE\s+/i);
+            for (var i = 1; i < createStatements.length; i++) {
+                var stmt = createStatements[i];
                 
+                var tableMatch = stmt.match(/^(\w+)\s*\(([\s\S]*)/);
+                if (!tableMatch) continue;
+                
+                var tableName = tableMatch[1];
+                var fullContent = tableMatch[2];
+                
+                var depth = 1;
+                var endIndex = 0;
+                for (var j = 0; j < fullContent.length; j++) {
+                    var c = fullContent[j];
+                    if (c === '(') depth++;
+                    else if (c === ')') {
+                        depth--;
+                        if (depth === 0) {
+                            endIndex = j;
+                            break;
+                        }
+                    }
+                }
+                
+                fullContent = fullContent.substring(0, endIndex);
+                
+                var tableComment = '';
+                var tableCommentMatch = fullContent.match(/COMMENT\s*=\s*['"]([^'"]*)['"]/i);
+                if (tableCommentMatch) {
+                    tableComment = tableCommentMatch[1];
+                    fullContent = fullContent.replace(tableCommentMatch[0], '');
+                }
+                
+                var columns = parseColumns(fullContent, dbType);
                 if (columns.length > 0) {
-                    tables.push({ name: tableName, columns });
+                    tables.push({ name: tableName, comment: tableComment, columns: columns });
                 }
             }
-            
             return tables;
         }
 
-        function parseColumns(columnsStr, dbType = 'mysql') {
-            const columns = [];
-            const lines = columnsStr.split(',');
+        function parseColumns(columnsStr, dbType) {
+            dbType = dbType || 'mysql';
+            var columns = [];
+            var lines = columnsStr.split(',');
+            var currentConstraint = {};
+            var pendingFKs = [];
             
-            let currentConstraint = {};
-            const pendingFKs = [];
-            
-            for (let line of lines) {
-                line = line.trim();
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
                 if (!line) continue;
                 
-                const upperLine = line.toUpperCase();
+                var upperLine = line.toUpperCase();
                 
-                if (upperLine.includes('PRIMARY KEY') || 
-                    upperLine.includes('FOREIGN KEY') || 
-                    upperLine.includes('UNIQUE') ||
-                    upperLine.includes('INDEX') ||
-                    upperLine.includes('KEY ') ||
-                    upperLine.includes('CONSTRAINT')) {
+                if (upperLine.indexOf('PRIMARY KEY') !== -1 || upperLine.indexOf('FOREIGN KEY') !== -1 || upperLine.indexOf('UNIQUE') !== -1 || upperLine.indexOf('CONSTRAINT') !== -1) {
                     currentConstraint = parseConstraint(line);
                     if (currentConstraint.isFK) {
                         pendingFKs.push(currentConstraint);
@@ -1222,27 +471,29 @@ CREATE TABLE posts (
                     continue;
                 }
                 
-                const columnMatch = line.match(/^[`"']?(\w+)[`"']?\s+(\w+(?:\s*\([^)]+\))?)/i);
+                var commentMatch = line.match(/COMMENT\s+['"]([^'"]*)['"]/i);
+                var columnComment = commentMatch ? commentMatch[1] : '';
+                var cleanLine = line.replace(/\s+COMMENT\s+['"][^'"]*['"]/gi, '');
+                
+                var columnMatch = cleanLine.match(/^[`"']?(\w+)[`"']?\s+(\w+(?:\s*\([^)]*\))?)/i);
+                
                 if (columnMatch) {
-                    const name = columnMatch[1];
-                    let type = columnMatch[2].toUpperCase();
+                    var name = columnMatch[1];
+                    var type = columnMatch[2].toUpperCase();
+                    var displayType = type;
                     
-                    let isPrimary = upperLine.includes('PRIMARY KEY') || currentConstraint.isPK;
-                    let isForeign = false;
-                    let isUnique = upperLine.includes('UNIQUE') || upperLine.includes('UNIQUE KEY') || currentConstraint.isUK;
-                    let references = null;
-                    
-                    if (upperLine.includes('PRIMARY KEY') && (type === 'SERIAL' || type === 'SERIAL PRIMARY KEY')) {
-                        type = 'SERIAL';
-                        isPrimary = true;
-                    }
+                    var isPrimary = upperLine.indexOf('PRIMARY KEY') !== -1 || currentConstraint.isPK;
+                    var isForeign = false;
+                    var isUnique = upperLine.indexOf('UNIQUE') !== -1 || currentConstraint.isUK;
+                    var references = null;
                     
                     if (type === 'SERIAL') {
                         isPrimary = true;
-                        type = 'SERIAL';
+                        displayType = 'SERIAL';
                     }
                     
-                    for (const fk of pendingFKs) {
+                    for (var j = 0; j < pendingFKs.length; j++) {
+                        var fk = pendingFKs[j];
                         if (fk.fkField === name || !fk.fkField) {
                             isForeign = true;
                             references = fk.refTable + '.' + fk.refField;
@@ -1256,17 +507,22 @@ CREATE TABLE posts (
                     }
                     
                     if (dbType === 'postgresql') {
-                        type = type.replace(/^INT\b/, 'INTEGER');
-                        type = type.replace(/^DECIMAL\b/, 'NUMERIC');
+                        displayType = displayType.replace(/\bINT\b/, 'INTEGER');
+                        displayType = displayType.replace(/\bDECIMAL\b/, 'NUMERIC');
+                        displayType = displayType.replace(/\bFLOAT\b/, 'REAL');
                     }
                     
+                    var displayName = columnComment || name;
+                    
                     columns.push({
-                        name,
-                        type,
-                        isPrimary,
-                        isForeign,
-                        references,
-                        isUnique
+                        name: name,
+                        displayName: displayName,
+                        type: displayType,
+                        isPrimary: isPrimary,
+                        isForeign: isForeign,
+                        references: references,
+                        isUnique: isUnique,
+                        comment: columnComment
                     });
                     
                     currentConstraint = {};
@@ -1277,20 +533,20 @@ CREATE TABLE posts (
         }
 
         function parseConstraint(line) {
-            const constraint = {};
-            const upper = line.toUpperCase();
+            var constraint = {};
+            var upper = line.toUpperCase();
             
-            if (upper.includes('PRIMARY KEY')) {
+            if (upper.indexOf('PRIMARY KEY') !== -1) {
                 constraint.isPK = true;
-                const match = line.match(/\(([^)]+)\)/);
+                var match = line.match(/\(([^)]+)\)/);
                 if (match) {
-                    constraint.pkField = match[1].split(',').map(s => s.trim().replace(/[`"']/g, ''));
+                    constraint.pkField = match[1].split(',').map(function(s) { return s.trim().replace(/[`"']/g, ''); });
                 }
             }
             
-            if (upper.includes('FOREIGN KEY')) {
+            if (upper.indexOf('FOREIGN KEY') !== -1) {
                 constraint.isFK = true;
-                const fkMatch = line.match(/FOREIGN\s+KEY\s*[(`]?(\w*)[)`]?\s*REFERENCES\s+[`"']?(\w+)[`"']?\s*[(`]?(\w*)[)`]?/i);
+                var fkMatch = line.match(/FOREIGN\s+KEY\s*[(`]?(\w*)[)`]?\s*REFERENCES\s+[`"']?(\w+)[`"']?\s*[(`]?(\w*)[)`]?/i);
                 if (fkMatch) {
                     constraint.fkField = fkMatch[1];
                     constraint.refTable = fkMatch[2];
@@ -1298,7 +554,7 @@ CREATE TABLE posts (
                 }
             }
             
-            if (upper.includes('UNIQUE') || (upper.includes('KEY ') && upper.includes('UNIQUE'))) {
+            if (upper.indexOf('UNIQUE') !== -1) {
                 constraint.isUK = true;
             }
             
@@ -1306,71 +562,74 @@ CREATE TABLE posts (
         }
 
         function generateDiagram() {
-            const sql = document.getElementById('sqlInput').value;
+            var sql = document.getElementById('sqlInput').value;
             if (!sql.trim()) {
                 showToast('请输入 SQL 语句');
                 return;
             }
             
-            const dbType = document.getElementById('dbType').value;
-            const tables = parseSQL(sql, dbType);
+            var dbType = document.getElementById('dbType').value;
+            var tables = parseSQL(sql, dbType);
             
             if (tables.length === 0) {
                 showToast('未检测到有效的数据表，请检查 SQL 语法');
                 return;
             }
             
-            const previewArea = document.getElementById('previewArea');
+            var previewArea = document.getElementById('previewArea');
             previewArea.innerHTML = '';
             
-            tables.forEach((table, index) => {
-                const card = createTableCard(table, index);
+            for (var i = 0; i < tables.length; i++) {
+                var card = createTableCard(tables[i], i);
                 previewArea.appendChild(card);
-            });
+            }
             
             document.getElementById('legend').style.display = 'flex';
-            showToast(`成功生成 ${tables.length} 个数据表`);
+            showToast('成功生成 ' + tables.length + ' 个数据表');
         }
 
         function createTableCard(table, index) {
-            const card = document.createElement('div');
+            var card = document.createElement('div');
             card.className = 'table-card';
-            card.style.animationDelay = `${index * 0.1}s`;
+            card.style.animationDelay = (index * 0.1) + 's';
             
-            const header = document.createElement('div');
+            var header = document.createElement('div');
             header.className = 'table-header';
-            header.innerHTML = `
-                <svg class="table-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <line x1="3" y1="9" x2="21" y2="9"/>
-                </svg>
-                ${table.name}
-            `;
             
-            const body = document.createElement('div');
+            var headerContent = '<svg class="table-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> ' + table.name;
+            
+            if (table.comment) {
+                headerContent += '<span style="font-weight: 400; opacity: 0.85; margin-left: 0.5rem;">— ' + table.comment + '</span>';
+            }
+            
+            header.innerHTML = headerContent;
+            
+            var body = document.createElement('div');
             body.className = 'table-body';
             
-            table.columns.forEach(col => {
-                const row = document.createElement('div');
+            for (var i = 0; i < table.columns.length; i++) {
+                var col = table.columns[i];
+                var row = document.createElement('div');
                 row.className = 'field-row';
                 
-                let badges = '';
-                if (col.isPrimary) badges += '<span class="pk">🔑</span>';
-                else if (col.isForeign) badges += '<span class="fk">🔗</span>';
+                var badges = '';
+                if (col.isPrimary) badges += '<span class="pk">PK</span>';
+                else if (col.isForeign) badges += '<span class="fk">FK</span>';
                 
-                let keyBadge = '';
+                var keyBadge = '';
                 if (col.isPrimary) keyBadge = '<span class="field-key pk">PK</span>';
                 else if (col.isForeign) keyBadge = '<span class="field-key fk">FK</span>';
                 else if (col.isUnique) keyBadge = '<span class="field-key uk">UK</span>';
                 
-                row.innerHTML = `
-                    <div class="field-name">${badges}${col.name}</div>
-                    <div class="field-type">${col.type}</div>
-                    <div>${keyBadge}</div>
-                `;
+                var commentHtml = '';
+                if (col.comment) {
+                    commentHtml = '<div class="field-comment">' + col.comment + '</div>';
+                }
+                
+                row.innerHTML = '<div class="field-name">' + badges + col.displayName + '</div><div class="field-type">' + col.type + '</div><div>' + keyBadge + '</div>' + commentHtml;
                 
                 body.appendChild(row);
-            });
+            }
             
             card.appendChild(header);
             card.appendChild(body);
@@ -1379,24 +638,19 @@ CREATE TABLE posts (
         }
 
         function updateStyle() {
-            const fontSize = document.getElementById('fontSize').value;
-            const borderRadius = document.getElementById('borderRadius').value;
-            const shadowIntensity = document.getElementById('shadowIntensity').value;
+            var fontSize = document.getElementById('fontSize').value;
+            var borderRadius = document.getElementById('borderRadius').value;
+            var shadowIntensity = document.getElementById('shadowIntensity').value;
             
-            document.documentElement.style.setProperty('--font-size-base', fontSize + 'px');
-            
-            document.querySelectorAll('.table-card').forEach(card => {
-                card.style.borderRadius = borderRadius + 'px';
-                card.style.boxShadow = `0 8px ${shadowIntensity}px var(--shadow)`;
-            });
-            
-            document.querySelectorAll('.field-row, .table-header, .panel-title, .btn, .sample-btn, .setting-item select, .theme-btn, .legend').forEach(el => {
-                el.style.fontSize = fontSize + 'px';
-            });
+            var cards = document.querySelectorAll('.table-card');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].style.borderRadius = borderRadius + 'px';
+                cards[i].style.boxShadow = '0 8px ' + shadowIntensity + 'px var(--shadow)';
+            }
         }
 
         function exportPNG() {
-            const previewArea = document.getElementById('previewArea');
+            var previewArea = document.getElementById('previewArea');
             if (previewArea.querySelector('.empty-state')) {
                 showToast('请先生成数据表图');
                 return;
@@ -1409,13 +663,13 @@ CREATE TABLE posts (
                 scale: 2,
                 logging: false,
                 useCORS: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `database-diagram-${Date.now()}.png`;
+            }).then(function(canvas) {
+                var link = document.createElement('a');
+                link.download = 'database-diagram-' + Date.now() + '.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 showToast('图片导出成功！');
-            }).catch(() => {
+            }).catch(function() {
                 showToast('导出失败，请重试');
             });
         }
@@ -1425,36 +679,33 @@ CREATE TABLE posts (
         }
 
         function showToast(message) {
-            const toast = document.getElementById('toast');
+            var toast = document.getElementById('toast');
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => {
+            setTimeout(function() {
                 toast.classList.remove('show');
             }, 2500);
         }
 
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        var themeBtns = document.querySelectorAll('.theme-btn');
+        for (var i = 0; i < themeBtns.length; i++) {
+            themeBtns[i].addEventListener('click', function() {
+                var btns = document.querySelectorAll('.theme-btn');
+                for (var j = 0; j < btns.length; j++) {
+                    btns[j].classList.remove('active');
+                }
                 this.classList.add('active');
                 
-                const theme = this.dataset.theme;
-                document.body.dataset.theme = theme;
-                
-                if (theme === 'dark' || theme === 'tech') {
-                    document.body.setAttribute('data-theme', theme);
-                } else {
-                    document.body.removeAttribute('data-theme');
-                    document.body.setAttribute('data-theme', theme);
-                }
+                var theme = this.dataset.theme;
+                document.body.setAttribute('data-theme', theme);
             });
-        });
+        }
 
         document.getElementById('sqlInput').addEventListener('keydown', function(e) {
             if (e.key === 'Tab') {
                 e.preventDefault();
-                const start = this.selectionStart;
-                const end = this.selectionEnd;
+                var start = this.selectionStart;
+                var end = this.selectionEnd;
                 this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
                 this.selectionStart = this.selectionEnd = start + 4;
             }
